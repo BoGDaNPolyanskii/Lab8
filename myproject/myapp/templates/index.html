@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shop</title>
+</head>
+<body>
+<h1>Project Shop</h1>
+<p><em style="color: orange;">Student full name: Polyanskii Bogdan Vadimovich, Group: KN21001b</em></p>
+
+<h2>Clients</h2>
+<table border="1">
+    <tr>
+        <th><strong>Client Name</strong></th>
+        <th><strong>Entity Type</strong></th>
+        <th><strong>Phone</strong></th>
+        <th><strong>Account Number</strong></th>
+    </tr>
+    {% for client in clients %}
+    <tr>
+        <td>{{ client.client_name }}</td>
+        <td>{{ client.entity_type }}</td>
+        <td>{{ client.phone }}</td>
+        <td>{{ client.account_number }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Products</h2>
+<table border="1">
+    <tr>
+        <th><strong>Product Name</strong></th>
+        <th><strong>Price</strong></th>
+        <th><strong>Stock</strong></th>
+    </tr>
+    {% for product in products %}
+    <tr>
+        <td>{{ product.product_name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ product.stock }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<h2>Sales</h2>
+<table border="1">
+    <tr>
+        <th><strong>Sale Date</strong></th>
+        <th><strong>Client</strong></th>
+        <th><strong>Product</strong></th>
+        <th><strong>Quantity</strong></th>
+        <th><strong>Discount</strong></th>
+        <th><strong>Payment Form</strong></th>
+        <th><strong>Delivery Needed</strong></th>
+        <th><strong>Delivery Cost</strong></th>
+    </tr>
+    {% for sale in sales %}
+    <tr>
+        <td>{{ sale.sale_date }}</td>
+        <td>{{ sale.client.client_name }}</td>
+        <td>{{ sale.product.product_name }}</td>
+        <td>{{ sale.quantity }}</td>
+        <td>{{ sale.discount }}</td>
+        <td>{{ sale.payment_form }}</td>
+        <td>{{ sale.delivery_needed }}</td>
+        <td>{{ sale.delivery_cost }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+</body>
+</html>

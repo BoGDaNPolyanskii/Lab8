@@ -1,0 +1,27 @@
+FROM python:3.12.5-slim
+
+RUN apt-get update && apt-get install -y postgresql-client && apt-get clean
+
+# Install PostgreSQL dependencies (needed for psycopg2)
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    gcc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create and set the working directory
+WORKDIR /app
+
+# Copy requirements.txt (assumes you have a requirements.txt file for your Django project)
+COPY requirements.txt /app/
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the entire Django project into the container
+COPY . /app/
+
+# Expose the port the app will run on (default for Django is 8000)
+EXPOSE 8000
+
+# Run migrations and then start the Django development server
+CMD python manage.py migrate && python manage.py runserver 0.0.0.0:8000

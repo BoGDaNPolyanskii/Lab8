@@ -1,0 +1,47 @@
+services:
+  db_auth:
+    container_name: shop_db
+    image: postgres:16.4-alpine
+    environment:
+      POSTGRES_USER: bog
+      POSTGRES_PASSWORD: 008
+      POSTGRES_DB: shop_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - db_auth
+
+  django_app:
+    build:
+      context: .
+    container_name: django_app
+    command: >
+      sh -c "until pg_isready -h db_auth -p 5432; do sleep 2; done &&
+      python manage.py migrate &&
+      python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DB_NAME: shop_db
+      DJANGO_DB_USER: bog
+      DJANGO_DB_PASSWORD: 008
+      DJANGO_DB_HOST: db_auth
+      DJANGO_DB_PORT: 5432
+    depends_on:
+      - db_auth
+
+volumes:
+  db_data:
